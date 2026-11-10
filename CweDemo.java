@@ -151,6 +151,11 @@ public class CweDemo {
     }
 
     // ----------------- CWE-836: Use of Password Hash Instead of Password
+    // CWE-836 happens when a system accepts the password HASH itself as the credential.
+    // If the hash is what proves identity, then anyone who steals the hash (for example,
+    // from a leaked database) can log in without ever knowing the real password
+    // Hashing the password in the client doesn't help, because the
+    // hash simply becomes the new password.
     static String sha256Hex(String s) throws Exception {
         return hex(MessageDigest.getInstance("SHA-256").digest(s.getBytes(StandardCharsets.UTF_8)));
     }
@@ -166,6 +171,10 @@ public class CweDemo {
     }
 
     // ----------------------------------------- CWE-798: Use of Hard-Coded Credentials
+    // CWE-798 happens when a password, key, or other secret is written directly into the
+    // source code. Anyone who gets the code or the compiled program (for example, by
+    // decompiling the jar) can read it, and it can't be changed without rebuilding and
+    // redeploying. It is also the same in every installation, so one leak exposes all of them.
     static final String HARDCODED_DB_PASSWORD = "demo-not-a-real-password"; // identical in every install
     static String dbPasswordBad() { return HARDCODED_DB_PASSWORD; }
     static String dbPasswordFixed() {
@@ -182,6 +191,9 @@ public class CweDemo {
     }
 
     // --------------------------------------------- CWE-348: Use of Less Trusted Source
+    // The X-Forwarded-For header is set by the client, so an attacker can fake it to look like
+    // an internal IP and pass an IP allow-list. The fix uses the real TCP connection address,
+    // which the sender can't forge.
     static String clientIpBad(Map<String, String> headers, String peer) {
         return headers.getOrDefault("X-Forwarded-For", peer);   // attacker-controlled header
     }
@@ -196,6 +208,9 @@ public class CweDemo {
     }
 
     // --------------------------------- CWE-842: Placement of User into Incorrect Group
+    // Deciding a user's role by guessing from their username (anything containing "admin")
+    // puts the wrong people in privileged groups, e.g. "badminton_fan" becomes an admin.
+    // The fix looks up the role in an explicit role table and defaults to "user".
     static final Map<String, String> ROLE_TABLE = Map.of("alice", "admin", "bob", "user");
     static String groupBad(String user)   { return user.contains("admin") ? "admin" : "user"; }
     static String groupFixed(String user) { return ROLE_TABLE.getOrDefault(user, "user"); }
@@ -207,6 +222,9 @@ public class CweDemo {
     }
 
     // -------------------------------------------- CWE-256: Plaintext Storage of a Password
+    // Storing passwords as plain text means anyone who gets the database (a leak, a backup,
+    // an insider) can read every password directly. The fix stores only a salted hash made
+    // with a slow password hashing function (PBKDF2), which can't be reversed to the password.
     static void demo256() throws Exception {
         banner(256, "Plaintext Storage of a Password");
         Map<String, String> dbBad = Map.of("carol", "Tr0ub4dor&3");
@@ -216,6 +234,9 @@ public class CweDemo {
     }
 
     // ------------------------------------------------ CWE-272: Least Privilege Violation
+    // A process that keeps extra privileges after it no longer needs them 
+    //  gives an attacker far more power if it is compromised. The fix
+    // drops every privilege except the one needed to serve requests right after startup.
     static class SimProcess {
         Set<String> privileges = new HashSet<>(Set.of("bind_low_port", "read_all_files", "write_all_files", "serve"));
         void dropPrivileges() { privileges = new HashSet<>(Set.of("serve")); }
