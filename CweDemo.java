@@ -357,8 +357,8 @@ public class CweDemo {
 
     // ----------------------------------------------------------------------------
     // CWE-336 (as titled in your notes): Race Condition within a Thread
-    // NOTE: in MITRE's catalog, race conditions are CWE-362/366; CWE-336 is
-    // "Same Seed in PRNG". The title/description from your notes are used here.
+    // Demonstrates a race condition when multiple threads update a shared counter.
+    // Compares an unsynchronized counter with a synchronized version to show how synchronization prevents lost updates.
     // ----------------------------------------------------------------------------
     static class CounterBad {
         int value = 0;
@@ -387,6 +387,8 @@ public class CweDemo {
     }
 
     // ------------------------------- CWE-1062: Parent Class with References to Child Class
+    // Demonstrates poor class design when a parent class directly references its child class.
+    // Compares this with polymorphism, where child classes implement their own methods without the parent
     static class ShapeBad {
         String describe() {
             if (this instanceof CircleBad c) return "circle r=" + c.radius;   // parent knows its child
@@ -407,6 +409,8 @@ public class CweDemo {
     }
 
     // ------------------------------------------------ CWE-620: Unverified Password Change
+    // Demonstrates an unverified password change vulnerability where a user can change their password without proving their identity.
+    // The fixed version requires the user to enter their current password before allowing a password change.
     static class UserStore {
         byte[] salt = randomBytes(16);
         byte[] pw;
@@ -427,6 +431,8 @@ public class CweDemo {
     }
 
     // --------------------------------------------- CWE-261: Weak Encoding for Password
+    // Demonstrates weak password protection using Base64 encoding and a short XOR key.
+    // Shows how easily passwords can be decoded or brute-forced and recommends strong password hashing algorithms.
     static void demo261() {
         banner(261, "Weak Encoding for Password");
         String enc = Base64.getEncoder().encodeToString("Tr0ub4dor&3".getBytes());
@@ -444,6 +450,8 @@ public class CweDemo {
     }
 
     // ----------------------------- CWE-1095: Loop Condition Value Update within the Loop
+    // Demonstrates a loop-control vulnerability where modifying the index and loop boundary inside the loop can cause skipped elements or incorrect execution.
+    // The fixed version uses streams to filter negative numbers without manually modifying loop control variables.
     static List<Integer> removeNegativesBad(List<Integer> input) {
         List<Integer> items = new ArrayList<>(input);
         int i = 0, n = items.size();
@@ -468,6 +476,9 @@ public class CweDemo {
     }
 
     // ----------------------------- CWE-778 / CWE-779: Insufficient / Excessive Logging
+    // Demonstrates insufficient logging and excessive logging.
+    // The first example compares silently ignored failed login attempts with properly recorded security events.
+    // The second example compares excessive logs containing sensitive information with concise logs that avoid exposing passwords.
     static class Capture extends Handler {
         final StringBuilder sb = new StringBuilder();
         @Override public void publish(LogRecord r) { sb.append(r.getLevel()).append(' ').append(r.getMessage()).append('\n'); }
