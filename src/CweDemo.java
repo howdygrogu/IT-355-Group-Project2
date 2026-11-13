@@ -1,12 +1,11 @@
 /*
- * CweDemo.java - Educational demo of 30 common weaknesses (CWEs).
+ * THIS IS NOT THE LARGE CODE EXAMPLE, THIS IS A COLLECTION OF SMALLER
+ * CODE EXMAPLES FOR SHOWCASING INDIVIDUAL CWEs IN ISOLATION
+ * 
+ * This covers all of our 30 selected CWEs, EACH IN ISOLATION
  *
  * Every section shows a VULNERABLE version and a FIXED version, then runs both
- * so you can see the difference. Everything is simulated and self-contained
- * (JDK only, Java 11+). Secrets are fake. Do NOT copy the "vulnerable" code
- * into real projects.
- *
- * Run:  java CweDemo.java        (or: javac CweDemo.java && java CweDemo)
+ * so you can see the difference. Fake secrets are used in this code.
  */
 import java.io.IOException;
 import java.nio.ByteBuffer;
