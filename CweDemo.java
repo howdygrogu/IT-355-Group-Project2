@@ -491,7 +491,8 @@ public class CweDemo {
     // Demonstrates insufficient logging and excessive logging.
     // The first example compares silently ignored failed login attempts with properly recorded security events.
     // The second example compares excessive logs containing sensitive information with concise logs that avoid exposing passwords.
-    static class Capture extends Handler {
+    // Vulnerable: Records too much information, including sensitive passwords, in application logs.
+    // Fixed: Logs only necessary request details without exposing passwords or other sensitive data.static class Capture extends Handler {
         final StringBuilder sb = new StringBuilder();
         @Override public void publish(LogRecord r) { sb.append(r.getLevel()).append(' ').append(r.getMessage()).append('\n'); }
         @Override public void flush() { }
@@ -526,6 +527,8 @@ public class CweDemo {
     }
 
     // ------------------------ CWE-1188: Initialization of Resource with an Insecure Default
+    // Vulnerable: Starts the server with debugging enabled, TLS disabled, and a weak default password.
+    // Fixed: Uses secure default settings and rejects passwords that do not meet minimum length requirements.
     static class ServerBad {
         boolean debug = true, tls = false;
         String adminPassword = "admin";
@@ -550,6 +553,8 @@ public class CweDemo {
     }
 
     // ------------------- CWE-15: External Control of System or Configuration Setting
+    // Vulnerable: Allows users to change any configuration setting, including disabling authentication.
+    // Fixed: Uses an allow-list so users can only modify approved settings like theme and language.
     static final Set<String> USER_EDITABLE = Set.of("theme", "language");
     static Map<String, Object> defaultConfig() {
         return new HashMap<>(Map.of("theme", "light", "language", "en", "require_auth", true));
@@ -570,6 +575,8 @@ public class CweDemo {
     }
 
     // ------------------------------------------------------ CWE-283: Unverified Ownership
+    // Vulnerable: Allows users to access documents without checking whether they own them.
+    // Fixed: Verifies document ownership before granting access and rejects unauthorized users.
     record Doc(String owner, String text) { }
     static final Map<Integer, Doc> DOCS = Map.of(
             1, new Doc("alice", "alice's private notes"),
@@ -588,6 +595,8 @@ public class CweDemo {
     }
 
     // --------------------------- CWE-134: Use of Externally-Controlled Format String
+    // Vulnerable: Allows user-controlled format strings that can expose sensitive information or cause errors.
+    // Fixed: Uses a constant format string so users cannot control how the output is formatted.
     static final String API_SECRET = "demo-api-secret-123";
     static String renderBad(String userFormat, String name) {
         return String.format(userFormat, name, API_SECRET);     // attacker controls the format
@@ -604,6 +613,8 @@ public class CweDemo {
     }
 
     // ------------------------------------------------- CWE-413: Improper Resource Locking
+    // Vulnerable: Creates a new lock for each withdrawal, allowing multiple threads to change the balance at once.
+    // Fixed: Uses one shared lock to prevent concurrent withdrawals from incorrectly updating the account balance.
     static class Account {
         int balance;
         final Object lock = new Object();
