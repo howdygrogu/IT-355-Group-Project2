@@ -1,4 +1,8 @@
-/*
+/**
+ * IT 355 Group Project 2
+ * Authors: Srida Kalidindi, Allaya Foster, Serena Sah, Valerie Fernandes, Karsten Tisdale
+ * Filename: CweDemo.java
+ *
  * THIS IS NOT THE LARGE CODE EXAMPLE, THIS IS A COLLECTION OF SMALLER
  * CODE EXMAPLES FOR SHOWCASING INDIVIDUAL CWEs IN ISOLATION
  * 

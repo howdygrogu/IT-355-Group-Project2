@@ -9,7 +9,7 @@
 
 package securebank;
 
-/** The kinds of account a customer can open. */
+/** enum for the kinds of account a customer can open. */
 enum AccountType {
     CHECKING,
     SAVINGS
