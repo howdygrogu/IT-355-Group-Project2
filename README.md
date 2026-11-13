@@ -9,7 +9,7 @@ The code contains comments for each CWE that's covered, indicating where the CWE
 
 ## CWE to file index
 
-This is a list of files that showcase each CWE so you can easily find them. Ctrl+F in the code and search `CWE-` in the corresponding file to find where the CWE is showcased.
+This is a list of files that showcase each CWE so you can easily find them. Ctrl+F in the code and search CWE- in the corresponding file to find where the CWE is showcased.
 
 | CWE | Name | Main location |
 |---|---|---|
