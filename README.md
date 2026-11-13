@@ -11,7 +11,7 @@ The code contains comments for each CWE that's covered, indicating where the CWE
 
 This is a list of files that showcase each CWE so you can easily find them. Ctrl+F in the code and search CWE- in the corresponding file to find where the CWE is showcased.
 
-| CWE ID | CWE Name | Files |
+| CWE ID | CWE Name | Location in files |
 |---|---|---|
 | 15 | External Control of System or Configuration Setting | `AdminService.changeSetting`, `BankConfig.load` |
 | 134 | Use of Externally-Controlled Format String | `StatementService.render`, `AuditLog.Entry.toLine` |
