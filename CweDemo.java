@@ -252,6 +252,8 @@ public class CweDemo {
     }
 
     // ----------------------------------------- CWE-308: Use of Single-factor Authentication
+    // Vulnerable: Allows access using only a password.
+    // Fixed: Requires both a password and a second authentication factor (TOTP).
     static String totp(byte[] secret) throws Exception {
         long counter = System.currentTimeMillis() / 1000 / 30;
         Mac mac = Mac.getInstance("HmacSHA1");
@@ -271,6 +273,8 @@ public class CweDemo {
     }
 
     // ------------------------------- CWE-257: Storing Passwords in a Recoverable Format
+    // Vulnerable: Stores passwords using reversible XOR encryption, allowing them to be recovered.
+    // Fixed: Uses a one-way salted password hash instead of reversible encryption.
     static final byte[] APP_KEY = "0123456789abcdef".getBytes();   // 128-bit key, still reversible
     static byte[] xor(byte[] data, byte[] key) {
         byte[] out = new byte[data.length];
@@ -286,6 +290,8 @@ public class CweDemo {
     }
 
     // ------------------------------------ CWE-270: Privilege Context Switching Error
+    // Vulnerable: Fails to restore the previous user context if a task encounters an exception.
+    // Fixed: Uses a finally block to ensure the previous user context is restored.
     static class Session { String user = "guest"; }
     static void runAsBad(Session s, String user, Runnable task) {
         String previous = s.user;
@@ -310,6 +316,8 @@ public class CweDemo {
     }
 
     // ------------------------------------------ CWE-260: Password in Configuration File
+    // Vulnerable: Stores a database password directly in a configuration file.
+    // Fixed: Keeps the password outside the configuration file and retrieves it from a secrets manager.
     static void demo260() throws Exception {
         banner(260, "Password in Configuration File");
         Path cfg = Files.createTempFile("app", ".properties");
@@ -326,6 +334,8 @@ public class CweDemo {
     }
 
     // ----------------------------- CWE-375: Returning a Mutable Object to an Untrusted Caller
+    // Vulnerable: Returns the original mutable list, allowing callers to modify internal data.
+    // Fixed: Returns an immutable copy to prevent callers from changing the internal list.
     static class PolicyBad {
         private final List<String> allowedHosts = new ArrayList<>(List.of("intranet.local"));
         List<String> getAllowedHosts() { return allowedHosts; }              // live internal reference
@@ -345,6 +355,8 @@ public class CweDemo {
     }
 
     // --------------------------------------- CWE-267: Privilege Defined With Unsafe Actions
+    // Vulnerable: Gives the backup operator permission to delete audit logs.
+    // Fixed: Removes the unnecessary permission and limits the role to required actions.
     static final Map<String, Set<String>> ROLES_BAD =
             Map.of("backup_operator", Set.of("read_all", "write_backup", "delete_audit_log"));
     static final Map<String, Set<String>> ROLES_FIXED =
